@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 
 import java.util.Set;
 
+import static java.lang.Thread.sleep;
+
 public class WindowHandlesTest {
 
     private static final String WINDOWS_URL = "https://the-internet.herokuapp.com/windows";
@@ -53,6 +55,22 @@ public class WindowHandlesTest {
         Assert.assertTrue(isTextPresented("New Window"), ErrorAssertionMessages.NO_TEXT);
     }
 
+    @Test
+    public void test003() throws InterruptedException {
+        int expectedAmountOfWindows = 3;
+
+        goToWindowHandlesPage();
+        clickOnLink();
+        clickOnLink();
+        waitForAmountOfWindows(expectedAmountOfWindows);
+        Assert.assertEquals(getAmountOfWindows(), expectedAmountOfWindows, ErrorAssertionMessages.AMOUNT_OF_WINDOWS);
+        boolean windowFound = switchWindowWithTitle("New Window");
+        Assert.assertTrue(windowFound);
+        waitForElement(h3headerXpath);
+        Assert.assertEquals(driver.getTitle(), "New Window");
+        Assert.assertTrue(isTextPresented("New Window"), ErrorAssertionMessages.NO_TEXT);
+    }
+
     void waitForElement(By elementLocator) {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
@@ -67,6 +85,26 @@ public class WindowHandlesTest {
     private boolean isTextPresented(String textToBePresented) {
         String pageSource = driver.getPageSource();
         return pageSource.contains(textToBePresented);
+    }
+
+    private void switchToFirstWindow() {
+        windowHandles = driver.getWindowHandles();
+        String firstWindowHandle = windowHandles.toArray(new String[]{})[0];
+        driver.switchTo().window(firstWindowHandle);
+    }
+
+    private boolean switchWindowWithTitle(String requiredTitle) throws InterruptedException {
+        windowHandles = driver.getWindowHandles();
+
+        for (String eachHandle : windowHandles) {
+            sleep(1000);
+            driver.switchTo().window(eachHandle);
+            if (driver.getTitle().equalsIgnoreCase(requiredTitle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void switchToNewWindow() {
