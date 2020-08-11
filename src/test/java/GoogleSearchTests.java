@@ -1,20 +1,8 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GoogleSearchTests {
+public class GoogleSearchTests extends BaseTest {
 
-    private static final String MAIN_PAGE_URL = "https://www.google.com/";
-    WebDriver driver;
-
-    @BeforeMethod
-    public void setUp() {
-        System.setProperty("webdriver.gecko.driver", "src/test/resources/drivers/win64/geckodriver.exe");
-        driver = new FirefoxDriver();
-    }
 
     //TODO: finish last step
     //1. open main page
@@ -23,21 +11,13 @@ public class GoogleSearchTests {
     //4. verify the results page
     @Test
     public void test001() {
-        openMainPage();
-        typeQuery("Portnov Computer School");
-        submitQuery();
-    }
+        google.mainPage.open();
+        google.mainPage.typeQuery("Portnov Computer School");
+        google.mainPage.submitQuery();
 
-    private void submitQuery() {
-        driver.findElement(By.name("q")).submit();
-    }
+        waitForElement(google.resultsPage.resultsStatsElement);
+        String actualResults = google.resultsPage.getResultsText();
 
-    private void typeQuery(String queryParameter) {
-        WebElement queryInput = driver.findElement(By.name("q"));
-        queryInput.sendKeys(queryParameter);
-    }
-
-    private void openMainPage() {
-        driver.get(MAIN_PAGE_URL);
+        Assert.assertTrue(actualResults.contains("results"));
     }
 }
