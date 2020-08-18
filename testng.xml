@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="MySuite1" verbose="1">
+
+    <parameter name="queryText" value="query text from testng.xml"/>
+    <test name="GoogleSearchTest">
+        <classes>
+            <class name="GoogleSearchTests">
+                <methods>
+                    <include name="test001"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
