@@ -23,6 +23,11 @@ public class MainPage {
         queryInput.sendKeys(queryParameter);
     }
 
+    public void typeQuery(String queryParameter1, String queryParameter2) {
+        WebElement queryInput = driver.findElement(queryInputElement);
+        queryInput.sendKeys(queryParameter1 + queryParameter2);
+    }
+
     public void submitQuery() {
         driver.findElement(queryInputElement).submit();
     }

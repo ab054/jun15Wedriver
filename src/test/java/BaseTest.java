@@ -1,7 +1,6 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeMethod;
 import pages.Google;
@@ -22,7 +21,7 @@ public class BaseTest {
 
     public void waitForElement(By elementToWait) {
         WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(elementToWait));
+        wait.until(driver -> driver.getTitle().equalsIgnoreCase("something"));
     }
 
 }
